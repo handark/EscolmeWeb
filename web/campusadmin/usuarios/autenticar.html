@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="Sistema Administrativo de Escolme">
+        <meta name="author" content="Jose Luis Orozco Mejia - handark@gmail.com">
+        <link href="../../recursos/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="../../recursos/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link href="../../recursos/css/jquery/jquery-ui-1.8.20.custom.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 100px;
+            }
+            .container{
+                width: 400px;
+            }
+            form legend{ text-align: center;}
+            footer{ text-align: center;}
+        </style>
+    </head>
+    <body>
+
+        <div id="BarraSuperior" ></div>
+        
+        <div class="container" >
+            <div class="well" >
+            <form class="form-horizontal" id="formAutenticar" >
+                <div style="text-align: center;">
+                    <img src="../../recursos/imagenes/logo_escolme_medio.png" >
+                </div>
+                <fieldset>
+                    <legend>Ingreso al Campus Administrativo</legend>
+                    <div class="alert alert-error" id="errores" style="display: none; ">
+                        <div id="errores_msn"></div>
+                    </div>
+                    <div class="control-group" id="div_tUsuario"  >
+                    <label class="control-label" for="tUsuario">Usuario</label>
+                    <div class="controls">
+                        <input type="text" class="input-medium" id="tUsuario" title="Usuario" required="required"  >
+                        <span class="help-inline" id="s_tUsuario" ></span>
+                    </div>
+                    </div>
+                    <div class="control-group" id="div_tContrasena">
+                        <label class="control-label" for="tContrasena">Contraseña</label>
+                        <div class="controls">
+                            <input type="password" class="input-medium" id="tContrasena" title="Contraseña" required="required" >
+                            <span class="help-inline" id="s_tContrasena" ></span>
+                        </div>
+                    </div>
+                    <div class="form-actions" >
+                        <button type="button" data-loading-text="Validando..." id="bAutenticar" class="btn btn-primary" >
+                                <i class="icon-user icon-white" ></i>
+                                Ingresar</button>
+                    </div>
+                </fieldset>
+            </form>
+          </div>
+            
+            <footer>
+                <p>&copy; Institución Universitaria Escolme 2012</p>
+                <a href="http://www.escolme.edu.co/sitio/" target="_blank"  title="Institución Universitaria Escolme" >www.escolme.edu.co</a>
+            </footer>
+        </div>
+        <script src="../../recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
+        <script src="../../recursos/scripts/jquery/jquery-ui-1.8.20.custom.min.js"></script>
+        <script src="../../recursos/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../../control/handark/handark.utilidades.js"></script>
+        <script src="../../control/comun/contenedor.js"></script>
+        <script src="../../control/usuarios/autenticar.js"></script>
+    </body>
+</html>

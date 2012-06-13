@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Campus Administrativo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Jose Luis Orozco Mejia - handark@gmail.com">
+
+        <link href="../../recursos/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        </style>
+        <link href="../../recursos/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+    <div id="BarraSuperior" ></div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+            <div id="BarraLateral" ></div>
+        </div><!--/span-->
+        <div class="span9">
+            <div class="breadcrumb" >
+                <div>
+                    <a href="../" >Cartera</a> <span class="divider" >/</span> Liquidaciones por Pagar
+                    <div class="pull-right label label-info" id="cargador" style="display: none;" ></div>
+                </div>
+            </div>
+            
+            <form class="well form-inline">  
+                <label class="control-label" for="tAnoPeriodo">Periodo</label>
+                <input type="number" class="input-small" min="1900" max="2500" id="tAnoPeriodo" >
+                <select id="cbPeriodosAcademicos" style="width: 250px;" >
+                </select>
+                <label class="control-label" for="cbEstadoLiquidacion">Estado</label>
+                <select id="cbEstadoLiquidacion" style="width: 200px;" >
+                    <option value="TODO" >-TODO-</option>
+                    <option value="PENDIENTE"  selected="selected" >PENDIENTE</option>
+                    <option value="PAGADO" >PAGADO</option>
+                </select>
+            </form>
+            <div>
+                <table class="table table-striped" id="tblLiquidaciones" style="display: none;">
+                    <thead>
+                        <tr><th colspan="6">Liquidaciones Pendientes por Pagar </th></tr>
+                        <tr>
+                            <th></th>
+                            <th>Estudiante</th>
+                            <th>Estado</th>
+                            <th>Fecha Liquidación</th>
+                            <th>No Liquidación</th>
+                            <th style='text-align: right;' >Total Liquidado</th>
+                            <th style='text-align: right;' >Descuento</th>
+                            <th style="text-align: right;">TOTAL</th>
+                            <th style="text-align: right;">SALDO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/span-->
+      </div><!--/row-->
+    </div> 
+    <script src="../../recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
+    <script src="../../recursos/scripts/jquery/jquery.tmpl.min.js"></script>
+    <script src="../../recursos/scripts/jquery/jshashtable.js"></script>
+    <script src="../../recursos/scripts/jquery/jquery.numberformatter-1.2.3.min.js"></script>
+    <script src="../../recursos/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../control/handark/handark.utilidades.js"></script>
+    <script src="../../control/comun/contenedor.js"></script>
+    <script src="../../control/cartera/liquidaciones.js"></script>
+    </body>
+</html>

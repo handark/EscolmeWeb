@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Campus Administrativo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Jose Luis Orozco Mejia - handark@gmail.com">
+
+        <link href="../../recursos/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        </style>
+        <link href="../../recursos/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+       <div id="BarraSuperior" ></div>
+       <div class="container-fluid">
+           <div class="row-fluid">
+               <div class="span3">
+                   <div id="BarraLateral" ></div>
+               </div>
+               <div class="span9">
+                    <div class="breadcrumb" >
+                        <div>
+                            <a href="../" >Cartera</a> <span class="divider" >/</span> Estado Estudiante
+                            <div class="pull-right label label-info" id="cargador" style="display: none;" ></div>
+                        </div>
+                    </div>  
+                    <form class="well form-inline">  
+                        <input type="text" class="input-medium" placeholder="Identificación Estudiante"  id="tIdentificacion" >
+                        <button type="submit" class="btn"><i class="icon-ok"></i> Cargar Estado</button>
+                        
+                    </form>
+                   <div class="well">
+                       <h4 id="hDatosEstudiante"></h4> 
+                       <div>
+                           <table class="table table-striped" id="tblLiquidaciones" >
+                                <thead>
+                                    <tr><th colspan="6" >Historial de Liquidaciones:</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th></th>
+                                        <th>Estado</th>
+                                        <th>Fecha Liquidacion</th>
+                                        <th>No Liquidacion</th>
+                                        <th style="text-align: right;">Total Liquidado</th>
+                                        <th style="text-align: right;">Descuento</th>
+                                        <th style="text-align: right;">TOTAL</th>
+                                    </tr>
+                                </tbody>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       
+    <div class="modal hide fade" id="ventana_lpagos">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Pagos del Estudiante</h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped" id="tblPagosLiquidacion" >
+                <thead>
+                    <tr><th>FECHA</th><th>TIPO</th><th style="text-align: right;">VALOR</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>
+        </div>
+    </div>
+       
+    <script src="../../recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
+    <script src="../../recursos/scripts/jquery/jquery.tmpl.min.js"></script>
+    <script src="../../recursos/scripts/jquery/jshashtable.js"></script>
+    <script src="../../recursos/scripts/jquery/jquery.numberformatter-1.2.3.min.js"></script>
+    <script src="../../recursos/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../control/handark/handark.utilidades.js"></script>
+    <script src="../../control/comun/contenedor.js"></script>
+    <script src="../../control/cartera/estado_estudiante.js"></script>
+    </body>
+</html>

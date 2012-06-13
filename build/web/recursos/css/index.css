@@ -1,0 +1,19 @@
+/* 
+    Document   : index
+    Created on : May 29, 2012, 12:14:40 PM
+    Author     : jose luis orozco mejia
+*/
+
+body
+{
+	font: 64% "Trebuchet MS" , sans-serif;
+	background-image: none;
+	background-color: #F2F2F2;   
+	
+}
+.cabecera
+{
+    height:100%;
+    background: #F2F2F2;
+}
+        
