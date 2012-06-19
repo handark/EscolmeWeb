@@ -1,4 +1,5 @@
 var url_servicios = "../../resources";
+var saldo_liquidacion = 0;
 
 $(document).ready(function () {
     
@@ -29,18 +30,24 @@ $(document).ready(function () {
 
         $(document).BarraSuperior({nivel:2,titulo:"Escolme Administrativo"});
         $(document).BarraLateral({link_activo:'liCarteraEstadoAlumno'});
+        
+        $('#bAgregarPago').button().click(function(){
+            
+        });
+        
     }
 });
 
 function CargarPersonaPorPegeId(pege_id){
+    $("#divDatosEstudiante").empty();
     $('#cargador').Cargador();
     $.ajax({
         type: 'GET',
         url: url_servicios + '/Personas/CargarPersonaPorPegeId/' + pege_id,
         dataType: "json",
         success: function(data){
-            $("#hDatosEstudiante").html(data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
-                data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD);
+            $("#divDatosEstudiante").html("<b>" + data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
+                data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
         }
     });    
     $.ajax({
@@ -48,8 +55,7 @@ function CargarPersonaPorPegeId(pege_id){
         url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pege_id,
         dataType: "json",
         success: function(data){
-            console.dir(data);
-            $("#hDatosEstudiante").append("<br>" + data.prog_NOMBRE);
+            $("#divDatosEstudiante").append("<br><b>Programa:</b> " + data.prog_NOMBRE);
         }
     });    
 }
@@ -65,7 +71,8 @@ function CargarHistorialLiquidaciones(estp_id){
                     "<i class='icon-folder-open' ></i></a></td><td>${liqu_ESTADO}</td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td>" + 
-                    "<td  style='text-align: right;' >${getTotalPagar()}</td></tr>";
+                    "<td  style='text-align: right;' >${getTotalPagar()}</td>" + 
+                    "<td  style='text-align: right;' >${getSaldo()}</td></tr>";
             $.template( "plantilla", plantilla );
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblLiquidaciones tbody" );
@@ -82,6 +89,23 @@ function CargarDetallesLiquidacion(LIQU_ID){
     $('#cargador').Cargador();
     $.ajax({
         type: 'GET',
+        url: url_servicios + '/Liquidaciones/CargarLiquidacionPorId/' + LIQU_ID,
+        dataType: "json",
+        async:false,
+        success: function(data){
+            saldo_liquidacion = data.liqu_TOTALLIQUIDADO - data.liqu_TOTALDESCUENTO - data.liqu_VALORPAGADO;
+            $("#divSaldoLiqudacion").html("SALDO ACTUAL: " + getFormatoNumero(saldo_liquidacion));
+            if(saldo_liquidacion > 0){
+                $("#divSaldoLiqudacion").removeClass("alert-success").addClass("alert-error");
+                $('#bAgregarPago').show();
+            }else{
+                $("#divSaldoLiqudacion").removeClass("alert-error").addClass("alert-success");
+                $('#bAgregarPago').hide();
+            }
+        }
+    });   
+    $.ajax({
+        type: 'GET',
         url: url_servicios + '/PagoLiquidacion/ListarPagosPorLiquidacion/' + LIQU_ID,
         dataType: "json",
         success: function(data){
@@ -90,17 +114,23 @@ function CargarDetallesLiquidacion(LIQU_ID){
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblPagosLiquidacion tbody" );
             }
+            else{
+                $("#tblPagosLiquidacion tbody").append("<tr><th colspan='8' >NO HAY PAGOS REGISTRADOS</th></tr>")
+            }
             $('#ventana_lpagos').modal('show');
         }
-    });         
-    
+    });             
 }
 
 function getFormatoNumero(valor){
     valor = $.formatNumber(valor, {format:"#,###", locale:"us"});
-    return valor != ""? "$" + valor : "0";
+    return valor != ""? "$" + valor : "$0";
 }
 
 function getTotalPagar(){
     return getFormatoNumero(this.data.liqu_TOTALLIQUIDADO - this.data.liqu_TOTALDESCUENTO);
+}
+
+function getSaldo(){
+    return getFormatoNumero(this.data.liqu_TOTALLIQUIDADO - this.data.liqu_TOTALDESCUENTO - this.data.liqu_VALORPAGADO);
 }

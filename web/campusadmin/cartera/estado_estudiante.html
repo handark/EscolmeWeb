@@ -43,6 +43,7 @@
                     </form>
                    <div class="well">
                        <h4 id="hDatosEstudiante"></h4> 
+                       <div id="divDatosEstudiante" ></div>
                        <div>
                            <table class="table table-striped" id="tblLiquidaciones" >
                                 <thead>
@@ -57,6 +58,7 @@
                                         <th style="text-align: right;">Total Liquidado</th>
                                         <th style="text-align: right;">Descuento</th>
                                         <th style="text-align: right;">TOTAL</th>
+                                        <th style="text-align: right;">SALDO</th>
                                     </tr>
                                 </tbody>
                            </table>
@@ -78,8 +80,12 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <div class="alert" id="divSaldoLiqudacion" style="text-align: right;" >
+                SALDO ACTUAL: $0
+            </div>
         </div>
         <div class="modal-footer">
+            <a href="#" class="btn btn-danger" id="bAgregarPago" ><i class="icon-shopping-cart icon-white" ></i> Agregar Pago</a>
             <a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>
         </div>
     </div>

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package escolme.academico.serviciosweb;
 
 import escolme.academico.modelo.entidades.LiquidacionAC;
@@ -33,6 +28,13 @@ public class LiquidacionesWS {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public List<LiquidacionAC> ListarLiquidacionesPorPersona(@PathParam("ESTP_ID") int ESTP_ID){
         return LiquidacionesBO.ListarLiquidacionesPorPersona(ESTP_ID);
+    }
+    
+    @GET
+    @Path("CargarLiquidacionPorId/{LIQU_ID}")
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public LiquidacionAC CargarLiquidacionPorId(@PathParam("LIQU_ID") long LIQU_ID){
+        return LiquidacionesBO.CargarLiquidacionPorId(LIQU_ID);
     }
     
 }
