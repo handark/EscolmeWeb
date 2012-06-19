@@ -42,7 +42,16 @@ function CargarPersonaPorPegeId(pege_id){
             $("#hDatosEstudiante").html(data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
                 data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD);
         }
-    });     
+    });    
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pege_id,
+        dataType: "json",
+        success: function(data){
+            console.dir(data);
+            $("#hDatosEstudiante").append("<br>" + data.prog_NOMBRE);
+        }
+    });    
 }
 
 function CargarHistorialLiquidaciones(estp_id){
