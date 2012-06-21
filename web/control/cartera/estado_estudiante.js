@@ -3,7 +3,8 @@ var saldo_liquidacion = 0;
 
 $(document).ready(function () {
     
-    $('#ventana_lpagos').modal({show:false,backdrop:true});
+    $('#ventanaListarPagos').modal({show:false,backdrop:true});
+    $('#ventanaRegistroPago').modal({show:false,backdrop:true});
     
     var prueba = "hola";
     
@@ -32,7 +33,8 @@ $(document).ready(function () {
         $(document).BarraLateral({link_activo:'liCarteraEstadoAlumno'});
         
         $('#bAgregarPago').button().click(function(){
-            
+            ListarTipoPagosLiquidaciones();
+            $('#ventanaRegistroPago').modal('show');
         });
         
     }
@@ -68,7 +70,7 @@ function CargarHistorialLiquidaciones(estp_id){
         dataType: "json",
         success: function(data){
             var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles' rel='tooltip' href='#' onclick='CargarDetallesLiquidacion(${liqu_ID})' >" + 
-                    "<i class='icon-folder-open' ></i></a></td><td>${liqu_ESTADO}</td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td>" +
+                    "<i class='icon-folder-open' ></i></a></td><td><span class='${getColorEstadoPago()}'>${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td>" + 
                     "<td  style='text-align: right;' >${getTotalPagar()}</td>" + 
@@ -76,12 +78,26 @@ function CargarHistorialLiquidaciones(estp_id){
             $.template( "plantilla", plantilla );
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblLiquidaciones tbody" );
+                var saldo_total = 0;
+                for(i=0;i<data.length;i++){
+                    saldo_total = saldo_total + (data[i].liqu_TOTALLIQUIDADO - data[i].liqu_TOTALDESCUENTO - data[i].liqu_VALORPAGADO);
+                }
+                $("#tblLiquidaciones tbody").append("<tr><th colspan='7' style='text-align: right;' >TOTAL SALDO:</th><th style='text-align: right;' >" + getFormatoNumero(saldo_total) + "</th></tr>")
             }
             else{
-                $("#tblLiquidaciones tbody").append("<tr><td colspan='7' ><div class='alert alert-info' >No se encontraron liquidaciones</div></td></tr>")
+                $("#tblLiquidaciones tbody").append("<tr><td colspan='8'  ><div class='alert alert-info' >No se encontraron liquidaciones</div></td></tr>")
             }
         }
     });   
+}
+
+function getColorEstadoPago(){
+    if(this.data.liqu_ESTADO == "PENDIENTE" ){
+        return "label label-important";
+    }
+    else{
+        return "label label-success";
+    }
 }
 
 function CargarDetallesLiquidacion(LIQU_ID){
@@ -117,7 +133,7 @@ function CargarDetallesLiquidacion(LIQU_ID){
             else{
                 $("#tblPagosLiquidacion tbody").append("<tr><th colspan='8' >NO HAY PAGOS REGISTRADOS</th></tr>")
             }
-            $('#ventana_lpagos').modal('show');
+            $('#ventanaListarPagos').modal('show');
         }
     });             
 }
@@ -133,4 +149,25 @@ function getTotalPagar(){
 
 function getSaldo(){
     return getFormatoNumero(this.data.liqu_TOTALLIQUIDADO - this.data.liqu_TOTALDESCUENTO - this.data.liqu_VALORPAGADO);
+}
+
+function ListarTipoPagosLiquidaciones(){
+    $("#cbFormaPago").html('');
+    $('#cargador').Cargador();
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/TipoPagoLiquidacion',
+        dataType: "json",
+        success: function(data){
+            if(data != null){
+                $('#cbFormaPago').get(0).options[$('#cbFormaPago').get(0).options.length] = new Option(" -- Seleccione la forma de pago", "");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].tipl_ID;
+                    var text = data[i].tipl_DESCRIPCION;
+                    $('#cbFormaPago').get(0).options[$('#cbFormaPago').get(0).options.length] = new Option(text, val);
+                    
+                }
+            }
+        }
+    });
 }

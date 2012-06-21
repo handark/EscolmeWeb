@@ -42,7 +42,7 @@ function CargarLiquidacionesPorPeriodo(peun_ID){
         dataType: "json",
         success: function(data){
             var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles para ${getNombreEstudiante()}' rel='tooltip' href='estado_estudiante.html?pege_id=${pege_ID}&estp_id=${estp_ID}&peun_id=${peun_ID}' ><i class='icon-folder-open' ></i></a></td>" 
-                + "<td>${getNombreEstudiante()}</td><td><span style=color:${getColorEstadoPago()} >${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td><td  style='text-align: right;' >${getTotalPagar()}</td><td  style='text-align: right;' >${getSaldo()}</td></tr>";
+                + "<td>${getNombreEstudiante()}</td><td><span class='${getColorEstadoPago()}'>${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td><td  style='text-align: right;' >${getTotalPagar()}</td><td  style='text-align: right;' >${getSaldo()}</td></tr>";
             $.template( "plantilla", plantilla );
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblLiquidaciones tbody" );
@@ -56,10 +56,10 @@ function CargarLiquidacionesPorPeriodo(peun_ID){
 
 function getColorEstadoPago(){
     if(this.data.liqu_ESTADO == "PENDIENTE" ){
-        return "red";
+        return "label label-important";
     }
     else{
-        return "green";
+        return "label label-success";
     }
 }
 

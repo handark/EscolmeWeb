@@ -68,7 +68,7 @@
            </div>
        </div>
        
-    <div class="modal hide fade" id="ventana_lpagos">
+    <div class="modal hide fade" id="ventanaListarPagos">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">×</button>
             <h3>Pagos del Estudiante</h3>
@@ -85,8 +85,43 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn btn-danger" id="bAgregarPago" ><i class="icon-shopping-cart icon-white" ></i> Agregar Pago</a>
-            <a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>
+            <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+            <a href="#" class="btn btn-primary" id="bAgregarPago" ><i class="icon-shopping-cart icon-white" ></i> Agregar Pago</a>
+        </div>
+    </div>
+       
+    <div class="modal hide fade" id="ventanaRegistroPago">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Registrar Nuevo Pago</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="cbFormaPago">Forma de Pago</label>
+                        <div class="controls">
+                            <select class="input-xlarge" id="cbFormaPago" ></select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="tValorPago">Valor a Pagar</label>
+                        <div class="controls">
+                            <input type="number" value="0" class="input-xlarge" id="tValorPago">
+                        </div>
+                    </div>     
+                    <div class="control-group">
+                        <label class="control-label" for="tObservacionesPago">Observaciones</label>
+                        <div class="controls">
+                            <textarea class="input-xlarge" rows="3" id="tObservacionesPago" ></textarea>
+                        </div>
+                    </div>     
+                </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+            <a href="#" class="btn btn-success" id="bAceptarPago" ><i class="icon-ok icon-white" ></i> Aceptar</a>
         </div>
     </div>
        
