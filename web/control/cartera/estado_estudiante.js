@@ -5,9 +5,7 @@ $(document).ready(function () {
     
     $('#ventanaListarPagos').modal({show:false,backdrop:true});
     $('#ventanaRegistroPago').modal({show:false,backdrop:true});
-    
-    var prueba = "hola";
-    
+
     if(sessionStorage.getItem("usua_usuario") == null){
         location.href = "../usuarios/autenticar.html?retorne=../cartera/estado_estudiante.html"
         return;
@@ -37,8 +35,48 @@ $(document).ready(function () {
             $('#ventanaRegistroPago').modal('show');
         });
         
+        $("#cbFormaPago").change(function(){
+            ValidarFormasPago($(this).val());
+        });
+        
     }
 });
+
+function ValidarFormasPago(forma_pago){
+    switch(forma_pago){
+        case "":
+    }
+}
+
+function CargarPersonaPorIdentificacion(pege_documentoidentidad){
+    $("#divDatosEstudiante").empty();
+    $('#cargador').Cargador();
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/Personas/CargarPersonaPorIdentificacion/' + pege_documentoidentidad,
+        dataType: "json",
+        success: function(data){
+            if(data != null)
+            {
+                $("#divDatosEstudiante").html("<b>" + data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
+                    data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
+                var pege_id = data.pege_ID;
+                $.ajax({
+                    type: 'GET',
+                    url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pege_id,
+                    dataType: "json",
+                    success: function(data){
+                        $("#divDatosEstudiante").append("<br><b>Programa:</b> " + data.prog_NOMBRE);
+                    }
+                });    
+            }
+            else{
+                
+            }
+        }
+    });    
+
+}
 
 function CargarPersonaPorPegeId(pege_id){
     $("#divDatosEstudiante").empty();
