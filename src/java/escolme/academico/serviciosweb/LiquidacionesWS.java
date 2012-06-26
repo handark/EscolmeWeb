@@ -26,8 +26,8 @@ public class LiquidacionesWS {
     @GET
     @Path("ListarLiquidacionesPorPersona/{ESTP_ID}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public List<LiquidacionAC> ListarLiquidacionesPorPersona(@PathParam("ESTP_ID") int ESTP_ID){
-        return LiquidacionesBO.ListarLiquidacionesPorPersona(ESTP_ID);
+    public List<LiquidacionAC> ListarLiquidacionesPorPersona(@PathParam("PEGE_ID") long PEGE_ID){
+        return LiquidacionesBO.ListarLiquidacionesPorPersona(PEGE_ID);
     }
     
     @GET

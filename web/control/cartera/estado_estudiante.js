@@ -24,7 +24,7 @@ $(document).ready(function () {
            var pege_id = $_GET["pege_id"];
            var estp_id = $_GET["estp_id"];
            CargarPersonaPorPegeId(pege_id);
-           CargarHistorialLiquidaciones(estp_id);
+           CargarHistorialLiquidaciones(pege_id);
         }
 
         $(document).BarraSuperior({nivel:2,titulo:"Escolme Administrativo"});
@@ -39,13 +39,22 @@ $(document).ready(function () {
             ValidarFormasPago($(this).val());
         });
         
+        $("#bCargarEstadoEstudiante").click(function(){
+            CargarPersonaPorIdentificacion($("#tIdentificacion").val());
+        })
+        
     }
 });
 
 function ValidarFormasPago(forma_pago){
     switch(forma_pago){
-        case "":
+        case "282": //Pagare
+            CargarConfiguracionPagare();
     }
+}
+
+function CargarConfiguracionPagare(){
+    
 }
 
 function CargarPersonaPorIdentificacion(pege_documentoidentidad){
@@ -100,11 +109,11 @@ function CargarPersonaPorPegeId(pege_id){
     });    
 }
 
-function CargarHistorialLiquidaciones(estp_id){
+function CargarHistorialLiquidaciones(pege_id){
     $('#cargador').Cargador();
     $.ajax({
         type: 'GET',
-        url: url_servicios + '/Liquidaciones/ListarLiquidacionesPorPersona/' + estp_id,
+        url: url_servicios + '/Liquidaciones/ListarLiquidacionesPorPersona/' + pege_id,
         dataType: "json",
         success: function(data){
             var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles' rel='tooltip' href='#' onclick='CargarDetallesLiquidacion(${liqu_ID})' >" + 

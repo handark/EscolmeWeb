@@ -18,8 +18,15 @@ public class PersonNaturalGeneralWS {
     @GET
     @Path("CargarPersonaPorPegeId/{pege_id}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PersonaNaturalGeneralAC CargarPersonaPorPegeId(@PathParam("pege_id") int pege_id){
+    public PersonaNaturalGeneralAC CargarPersonaPorPegeId(@PathParam("pege_id") long pege_id){
         return PersonaNaturalGeneralBO.CargarPersonaPorPegeId(pege_id);
+    }
+    
+    @GET
+    @Path("CargarPersonaPorIdentificacion/{pege_documentoidentidad}")
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public PersonaNaturalGeneralAC CargarPersonaPorIdentificacion(@PathParam("pege_documentoidentidad") String pege_documentoidentidad){
+        return PersonaNaturalGeneralBO.CargarPersonaPorIdentificacion(pege_documentoidentidad);
     }
     
 }
