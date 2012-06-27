@@ -36,10 +36,9 @@
                             <div class="pull-right label label-info" id="cargador" style="display: none;" ></div>
                         </div>
                     </div>  
-                    <form class="well form-inline">  
-                        <input type="text" class="input-medium" placeholder="Identificación Estudiante"  id="tIdentificacion" >
-                        <button type="button" class="btn" id="bCargarEstadoEstudiante" ><i class="icon-ok"></i> Cargar Estado</button>
-                        
+                    <form class="well form-inline" id="formCargarEstadoEstudiante" >  
+                        <input type="text" class="input-medium" maxlength="25" placeholder="Identificación Estudiante"  id="tIdentificacion" >
+                        <button type="submit" class="btn" ><i class="icon-ok"></i> Cargar Estado</button>
                     </form>
                    <div class="well">
                        <h4 id="hDatosEstudiante"></h4> 
@@ -48,8 +47,6 @@
                            <table class="table table-striped" id="tblLiquidaciones" >
                                 <thead>
                                     <tr><th colspan="6" >Historial de Liquidaciones:</th></tr>
-                                </thead>
-                                <tbody>
                                     <tr>
                                         <th></th>
                                         <th>Estado</th>
@@ -60,7 +57,8 @@
                                         <th style="text-align: right;">TOTAL</th>
                                         <th style="text-align: right;">SALDO</th>
                                     </tr>
-                                </tbody>
+                                </thead>
+                                <tbody></tbody>
                            </table>
                        </div>
                    </div>
@@ -104,13 +102,13 @@
                             <select class="input-xlarge" id="cbFormaPago" ></select>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="tValorPago">Valor a Pagar</label>
+                    <div class="control-group" id="divValorPago" >
+                        <label class="control-label" id="lValorPago" for="tValorPago">Valor a Pagar</label>
                         <div class="controls">
                             <input type="number" value="0" class="input-xlarge" id="tValorPago">
                         </div>
-                    </div>     
-                    <div class="control-group">
+                    </div>
+                    <div class="control-group" >
                         <label class="control-label" for="tObservacionesPago">Observaciones</label>
                         <div class="controls">
                             <textarea class="input-xlarge" rows="3" id="tObservacionesPago" ></textarea>

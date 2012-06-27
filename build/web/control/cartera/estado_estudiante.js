@@ -3,8 +3,14 @@ var saldo_liquidacion = 0;
 
 $(document).ready(function () {
     
+    
     $('#ventanaListarPagos').modal({show:false,backdrop:true});
-    $('#ventanaRegistroPago').modal({show:false,backdrop:true});
+    $('#ventanaRegistroPago').modal({show:false,backdrop:true}).on('show', function () {
+        LimpiarFormularioRegistroPago();
+    });
+    $(".input-xlarge").on('focus', function () {
+        this.select();
+    });
 
     if(sessionStorage.getItem("usua_usuario") == null){
         location.href = "../usuarios/autenticar.html?retorne=../cartera/estado_estudiante.html"
@@ -30,8 +36,9 @@ $(document).ready(function () {
         $(document).BarraSuperior({nivel:2,titulo:"Escolme Administrativo"});
         $(document).BarraLateral({link_activo:'liCarteraEstadoAlumno'});
         
+
+        
         $('#bAgregarPago').button().click(function(){
-            ListarTipoPagosLiquidaciones();
             $('#ventanaRegistroPago').modal('show');
         });
         
@@ -39,36 +46,59 @@ $(document).ready(function () {
             ValidarFormasPago($(this).val());
         });
         
-        $("#bCargarEstadoEstudiante").click(function(){
-            CargarPersonaPorIdentificacion($("#tIdentificacion").val());
-        })
+        $("#formCargarEstadoEstudiante").submit(function(){
+            if($("#tIdentificacion").val()){
+                CargarPersonaPorIdentificacion($("#tIdentificacion").val());
+            }
+            else{
+                $("#divDatosEstudiante").html('<div class="alert alert-error"><button class="close" data-dismiss="alert">×</button>' +
+                   '<strong>Por favor ingrese la Identificación del estudiante</strong></div>').show().fadeOut(5000);
+            }
+            return false;
+        });
         
     }
 });
+
+function LimpiarFormularioRegistroPago(){
+    ListarTipoPagosLiquidaciones();
+    $("#divValorPago").hide();
+    $("#tValorPago").val("0");
+    $("#tObservacionesPago").val("");
+}
 
 function ValidarFormasPago(forma_pago){
     switch(forma_pago){
         case "282": //Pagare
             CargarConfiguracionPagare();
+            return;
+        
     }
+
+   $("#lValorPago").html("Valor del Pago");
+   $("#divValorPago").show();
+   $("#tValorPago").val(saldo_liquidacion).focus();
 }
 
 function CargarConfiguracionPagare(){
-    
+   $("#lValorPago").html("Valor del Pagare");
+   $("#divValorPago").show();
+   $("#tValorPago").val(saldo_liquidacion).focus();
 }
 
 function CargarPersonaPorIdentificacion(pege_documentoidentidad){
     $("#divDatosEstudiante").empty();
+
     $('#cargador').Cargador();
     $.ajax({
         type: 'GET',
         url: url_servicios + '/Personas/CargarPersonaPorIdentificacion/' + pege_documentoidentidad,
         dataType: "json",
         success: function(data){
-            if(data != null)
+            if(data.pege_DOCUMENTOIDENTIDAD != null)
             {
-                $("#divDatosEstudiante").html("<b>" + data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
-                    data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
+
+                $("#divDatosEstudiante").html("<b>" + getNombreEstudiante(data) + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
                 var pege_id = data.pege_ID;
                 $.ajax({
                     type: 'GET',
@@ -77,14 +107,24 @@ function CargarPersonaPorIdentificacion(pege_documentoidentidad){
                     success: function(data){
                         $("#divDatosEstudiante").append("<br><b>Programa:</b> " + data.prog_NOMBRE);
                     }
-                });    
+                });  
+                CargarHistorialLiquidaciones(pege_id);
             }
             else{
-                
+                $("#tblLiquidaciones tbody").empty();
+                $("#divDatosEstudiante").html('<div class="alert alert-error"><button class="close" data-dismiss="alert">×</button>' +
+                   ' No se encontró ningún estudiante con la Identificación <strong>' + pege_documentoidentidad + '</strong></div>').show().fadeOut(5000);
             }
         }
     });    
+}
 
+function getNombreEstudiante(data){
+    if(data.peng_SEGUNDONOMBRE == null)
+        data.peng_SEGUNDONOMBRE = "";
+    if(data.peng_SEGUNDOAPELLIDO == null)
+        data.peng_SEGUNDOAPELLIDO = "";
+    return data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO;
 }
 
 function CargarPersonaPorPegeId(pege_id){
@@ -95,8 +135,7 @@ function CargarPersonaPorPegeId(pege_id){
         url: url_servicios + '/Personas/CargarPersonaPorPegeId/' + pege_id,
         dataType: "json",
         success: function(data){
-            $("#divDatosEstudiante").html("<b>" + data.peng_PRIMERNOMBRE + " " + data.peng_SEGUNDONOMBRE + " " + 
-                data.peng_PRIMERAPELLIDO + " " + data.peng_SEGUNDOAPELLIDO + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
+            $("#divDatosEstudiante").html("<b>" + getNombreEstudiante(data) + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
         }
     });    
     $.ajax({
@@ -111,6 +150,7 @@ function CargarPersonaPorPegeId(pege_id){
 
 function CargarHistorialLiquidaciones(pege_id){
     $('#cargador').Cargador();
+    $("#tblLiquidaciones tbody").empty();
     $.ajax({
         type: 'GET',
         url: url_servicios + '/Liquidaciones/ListarLiquidacionesPorPersona/' + pege_id,

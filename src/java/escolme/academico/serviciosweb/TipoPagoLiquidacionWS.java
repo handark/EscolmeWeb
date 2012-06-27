@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * @author Jose Luis Orozco Mejia
- * @since 20-06-2012
+ * @since 27-06-2012
  */
 @Path("/TipoPagoLiquidacion")
 public class TipoPagoLiquidacionWS {
