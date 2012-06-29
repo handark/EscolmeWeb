@@ -1,5 +1,6 @@
 var url_servicios = "../../resources";
 var saldo_liquidacion = 0;
+var pLIQU_ID = 0;
 
 $(document).ready(function () {
     
@@ -57,12 +58,57 @@ $(document).ready(function () {
             return false;
         });
         
+        $("#bAceptarPago").click(function(){
+            $("#formAgregarPago").submit();
+        });
+        
+        $("#formAgregarPago").submit(function(){
+             alert("entro1");
+            GuardarPagoLiquidacion();
+            return false;
+        });
+        
     }
 });
 
+function GuardarPagoLiquidacion(){
+    console.dir("entro");
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        url: url_servicios + '/PagoLiquidacion',
+        dataType: "json",
+        data: AgregarPagoLiquidacionToJSON(),
+        success: function(data, textStatus, jqXHR){
+                alert('Wine created successfully');
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+                alert('addWine error: ' + textStatus);
+        }
+    });   
+}
+
+function AgregarPagoLiquidacionToJSON() {
+    var fecha = new Date();
+    var usuario = sessionStorage.getItem("usua_id");
+    return JSON.stringify({
+            "PALI_ID": 0, 
+            "LIQU_ID": pLIQU_ID, 
+            "PALI_VALOR": $('#tValorPago').val(),
+            "PALI_FECHA": null,
+            "PALI_ESTADO": "VALIDO",
+            "PALI_REGISTRADOPOR": usuario,
+            "PALI_FECHACAMBIO": null,
+            "TIPL_ID": $('#cbFormaPago').val(),
+            "PALI_OBSERVACIONES": $('#tObservacionesPago').val()
+            });
+}
+
 function LimpiarFormularioRegistroPago(){
     ListarTipoPagosLiquidaciones();
+    $("#divNumeroPagare").hide();
     $("#divValorPago").hide();
+    $("#divAlertaPagos").hide();
     $("#tValorPago").val("0");
     $("#tObservacionesPago").val("");
 }
@@ -76,14 +122,19 @@ function ValidarFormasPago(forma_pago){
     }
 
    $("#lValorPago").html("Valor del Pago");
+   $("#divNumeroPagare").hide();
+   $("#divAlertaPagos").hide();
    $("#divValorPago").show();
    $("#tValorPago").val(saldo_liquidacion).focus();
 }
 
 function CargarConfiguracionPagare(){
+   $("#divAlertaPagos").html('<a class="close" data-dismiss="alert" href="#">×</a>Al seleccionar forma de pago <strong>PAGARÉ</strong> el estudiante sera agregado de forma automatica al Sistema de Cartera con un credito por el Valor del Pagare').show();
    $("#lValorPago").html("Valor del Pagare");
    $("#divValorPago").show();
-   $("#tValorPago").val(saldo_liquidacion).focus();
+   $("#divNumeroPagare").show();
+   $("#tValorPago").val(saldo_liquidacion);
+   $("#tNumeroPagare").focus();
 }
 
 function CargarPersonaPorIdentificacion(pege_documentoidentidad){
@@ -188,6 +239,7 @@ function getColorEstadoPago(){
 }
 
 function CargarDetallesLiquidacion(LIQU_ID){
+    pLIQU_ID = LIQU_ID;
     $("#tblPagosLiquidacion tbody").empty();
     $('#cargador').Cargador();
     $.ajax({

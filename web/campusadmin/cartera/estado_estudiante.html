@@ -94,18 +94,27 @@
             <h3>Registrar Nuevo Pago</h3>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal">
+            <div class="alert alert-info" id="divAlertaPagos" style="display:none;" >
+                
+            </div>
+            <form class="form-horizontal" id="formAgregarPago"  >
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="cbFormaPago">Forma de Pago</label>
                         <div class="controls">
-                            <select class="input-xlarge" id="cbFormaPago" ></select>
+                            <select class="input-xlarge"  id="cbFormaPago" ></select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="divNumeroPagare" >
+                        <label class="control-label" id="lNumPagare" for="tNumeroPagare">Numero de Pagare</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="tNumeroPagare">
                         </div>
                     </div>
                     <div class="control-group" id="divValorPago" >
                         <label class="control-label" id="lValorPago" for="tValorPago">Valor a Pagar</label>
                         <div class="controls">
-                            <input type="number" value="0" class="input-xlarge" id="tValorPago">
+                            <input type="number" required="required" value="0" class="input-xlarge" id="tValorPago">
                         </div>
                     </div>
                     <div class="control-group" >
@@ -119,7 +128,7 @@
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-            <a href="#" class="btn btn-success" id="bAceptarPago" ><i class="icon-ok icon-white" ></i> Aceptar</a>
+            <button type="submit" class="btn btn-success" id="bAceptarPago"   ><i class="icon-ok icon-white" ></i> Aceptar</button>
         </div>
     </div>
        
