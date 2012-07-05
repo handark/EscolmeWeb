@@ -1,10 +1,12 @@
 var url_servicios = "../../resources";
 var saldo_liquidacion = 0;
 var pLIQU_ID = 0;
+var pPEGE_ID = 0;
 
 $(document).ready(function () {
     
     
+    $('#ventanaReciboCaja').modal({show:false,backdrop:true});
     $('#ventanaListarPagos').modal({show:false,backdrop:true});
     $('#ventanaRegistroPago').modal({show:false,backdrop:true}).on('show', function () {
         LimpiarFormularioRegistroPago();
@@ -37,7 +39,9 @@ $(document).ready(function () {
         $(document).BarraSuperior({nivel:2,titulo:"Escolme Administrativo"});
         $(document).BarraLateral({link_activo:'liCarteraEstadoAlumno'});
         
-
+        $('#bImprimirRecibiCaja').button().click(function(){
+            $('#divReciboCaja').printElement({pageTitle:'Recibo de Caja Escolme'});
+        });
         
         $('#bAgregarPago').button().click(function(){
             $('#ventanaRegistroPago').modal('show');
@@ -63,7 +67,6 @@ $(document).ready(function () {
         });
         
         $("#formAgregarPago").submit(function(){
-             alert("entro1");
             GuardarPagoLiquidacion();
             return false;
         });
@@ -71,8 +74,119 @@ $(document).ready(function () {
     }
 });
 
+function GenerarReciboCaja(pali_ID){
+    $('#ventanaListarPagos').modal('hide');
+    var liquidacion = {rebidode:'',no:0,identificacion:'',liquidacionref:'',fecha:'',valor:0,programa:'',valorletra:'',liquidacion:0,saldo:0}; 
+
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/PagoLiquidacion/CargarPagoPorID/' + pali_ID,
+        dataType: "json",
+        async: false,
+        success: function(data){
+            liquidacion.fecha = data.pali_FECHA;
+            liquidacion.no = data.pali_ID;
+            liquidacion.valor = data.pali_VALOR;
+            liquidacion.valorletra = data.pali_VALORLETRA;
+            liquidacion.liquidacion = data.liqu_ID;
+        }
+    });    
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/Personas/CargarPersonaPorPegeId/' + pPEGE_ID,
+        dataType: "json",
+        async: false,
+        success: function(data){
+             liquidacion.rebidode = getNombreEstudiante(data);
+             liquidacion.identificacion = data.pege_DOCUMENTOIDENTIDAD;
+        }
+    }); 
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pPEGE_ID,
+        dataType: "json",
+        async: false,
+        success: function(data){
+            liquidacion.programa = data.prog_NOMBRE;
+        }
+    });    
+    $.ajax({
+        type: 'GET',
+        url: url_servicios + '/Liquidaciones/CargarLiquidacionPorId/' + liquidacion.liquidacion,
+        dataType: "json",
+        async:false,
+        success: function(data){
+            liquidacion.saldo = data.liqu_TOTALLIQUIDADO - data.liqu_TOTALDESCUENTO - data.liqu_VALORPAGADO;
+            liquidacion.liquidacionref= data.liqu_REFERENCIA
+        }
+    });   
+ 
+    $('#divRcCabecera').html('<table style="width:100%">' +
+                        '<tr>' +
+                        '    <th style="text-align: left;width:100px;">' +
+                        '        RECIBIDO DE:' +
+                        '    </th>' +
+                        '    <td>' + liquidacion.rebidode + '</td>' +
+                        '    <th style="text-align: left;width:80px;">' +
+                        '        No:' +
+                        '    </th>' +
+                        '    <td>' +  liquidacion.no + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '    <th style="text-align: left;">' +
+                        '        IDENTIFICACION:' +
+                        '    </th>' +
+                        '    <td>' + liquidacion.identificacion + '</td>' +
+                        '    <th style="text-align: left;">' +
+                        '        FECHA:' +
+                        '    </th>' +
+                        '    <td>' + liquidacion.fecha + '</td>' +                        
+                        '</tr>' +
+                        '<tr>' +
+                        '    <th style="text-align: left;">' +
+                        '    PROGRAMA:</th>' +
+                        '    <td>' + liquidacion.programa + '</td>' +
+                        '    <th style="text-align: left;">' +
+                        '        MONTO:' +
+                        '    </th>' +
+                        '    <td>' + getFormatoNumero(liquidacion.valor) + '</td>' +                        
+                        '</tr>' +                        
+                   '</table><br><div>LA SUMA DE: ' + liquidacion.valorletra + '</div>');
+               
+    $('#divRcDetalles').html('<table style="width:100%" >' +
+                            '<thead>' +
+                            '    <tr>' +
+                            '        <th style="border-bottom: 1px #000 solid; text-align: right;" >' +
+                            '            VALOR' +
+                            '        </th>' +
+                            '        <th style="border-bottom: 1px #000 solid; text-align: right;" >' +
+                            '            DESCUENTO' +
+                            '        </th>' +
+                            '        <th style="border-bottom: 1px #000 solid; text-align: right;" >' +
+                            '            TOTAL' +
+                            '        </th>' +
+                            '        <th style="border-bottom: 1px #000 solid;text-align:center;" >' +
+                            '            CONCEPTO' +
+                            '        </th>' +
+                            '        <th style="border-bottom: 1px #000 solid; text-align: right;" >' +
+                            '            SALDO' +
+                            '        </th>' +
+                            '    </tr>' +
+                            '</thead>' +
+                            '<tbody>' +
+                                '<td style="text-align: right;" >' + getFormatoNumero(liquidacion.valor) + '</td>' +
+                                '<td style="text-align: right;" >$0</td>' +
+                                '<td style="text-align: right;" >' + getFormatoNumero(liquidacion.valor) + '</td>' +
+                                '<td style="text-align: center;" >ABONO MATRICULA ' + liquidacion.liquidacion + '</td>' +
+                                '<td style="text-align: right;" >' + getFormatoNumero(liquidacion.saldo) + '</td>' +
+                            '</tbody>' +
+                            '</table>');
+    
+    $('#ventanaReciboCaja').modal('show');
+}
+
 function GuardarPagoLiquidacion(){
-    console.dir("entro");
+
     $.ajax({
         type: 'POST',
         contentType: 'application/json',
@@ -80,10 +194,14 @@ function GuardarPagoLiquidacion(){
         dataType: "json",
         data: AgregarPagoLiquidacionToJSON(),
         success: function(data, textStatus, jqXHR){
-                alert('Wine created successfully');
+            $('#ventanaListarPagos').modal('hide');
+            $('#ventanaRegistroPago').modal('hide');
+            CargarHistorialLiquidaciones(pPEGE_ID);
+                $("#divDatosEstudiante").html('<div class="alert alert-success">' +
+                   data.mensaje + '</div>').show();
         },
         error: function(jqXHR, textStatus, errorThrown){
-                alert('addWine error: ' + textStatus);
+                alert('Error: ' + textStatus);
         }
     });   
 }
@@ -118,7 +236,6 @@ function ValidarFormasPago(forma_pago){
         case "282": //Pagare
             CargarConfiguracionPagare();
             return;
-        
     }
 
    $("#lValorPago").html("Valor del Pago");
@@ -150,16 +267,17 @@ function CargarPersonaPorIdentificacion(pege_documentoidentidad){
             {
 
                 $("#divDatosEstudiante").html("<b>" + getNombreEstudiante(data) + " - " + data.pege_DOCUMENTOIDENTIDAD + "</b>");
-                var pege_id = data.pege_ID;
+
+                pPEGE_ID = data.pege_ID;
                 $.ajax({
                     type: 'GET',
-                    url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pege_id,
+                    url: url_servicios + '/Programas/CargarProgramaPorEstudiantePegeId/' + pPEGE_ID,
                     dataType: "json",
                     success: function(data){
                         $("#divDatosEstudiante").append("<br><b>Programa:</b> " + data.prog_NOMBRE);
                     }
                 });  
-                CargarHistorialLiquidaciones(pege_id);
+                CargarHistorialLiquidaciones(pPEGE_ID);
             }
             else{
                 $("#tblLiquidaciones tbody").empty();
@@ -179,6 +297,7 @@ function getNombreEstudiante(data){
 }
 
 function CargarPersonaPorPegeId(pege_id){
+    pPEGE_ID = pege_id;
     $("#divDatosEstudiante").empty();
     $('#cargador').Cargador();
     $.ajax({
@@ -200,6 +319,7 @@ function CargarPersonaPorPegeId(pege_id){
 }
 
 function CargarHistorialLiquidaciones(pege_id){
+    pPEGE_ID = pege_id;
     $('#cargador').Cargador();
     $("#tblLiquidaciones tbody").empty();
     $.ajax({
@@ -207,7 +327,7 @@ function CargarHistorialLiquidaciones(pege_id){
         url: url_servicios + '/Liquidaciones/ListarLiquidacionesPorPersona/' + pege_id,
         dataType: "json",
         success: function(data){
-            var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles' rel='tooltip' href='#' onclick='CargarDetallesLiquidacion(${liqu_ID})' >" + 
+            var plantilla = "<tr><td><a class='btn btn-mini' title='Ver pagos realizados' rel='tooltip' href='#' onclick='CargarDetallesLiquidacion(${liqu_ID})' >" + 
                     "<i class='icon-folder-open' ></i></a></td><td><span class='${getColorEstadoPago()}'>${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td>" +
                     "<td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td>" + 
@@ -220,7 +340,7 @@ function CargarHistorialLiquidaciones(pege_id){
                 for(i=0;i<data.length;i++){
                     saldo_total = saldo_total + (data[i].liqu_TOTALLIQUIDADO - data[i].liqu_TOTALDESCUENTO - data[i].liqu_VALORPAGADO);
                 }
-                $("#tblLiquidaciones tbody").append("<tr><th colspan='7' style='text-align: right;' >TOTAL SALDO:</th><th style='text-align: right;' >" + getFormatoNumero(saldo_total) + "</th></tr>")
+                $("#tblLiquidaciones tbody").append("<tr><th colspan='7' style='text-align: right;' >TOTAL SALDO:</th><th style='text-align: right;' >" + getFormatoNumero(saldo_total) + "</th></tr>");
             }
             else{
                 $("#tblLiquidaciones tbody").append("<tr><td colspan='8'  ><div class='alert alert-info' >No se encontraron liquidaciones</div></td></tr>")
@@ -232,6 +352,9 @@ function CargarHistorialLiquidaciones(pege_id){
 function getColorEstadoPago(){
     if(this.data.liqu_ESTADO == "PENDIENTE" ){
         return "label label-important";
+    }
+    else if(this.data.liqu_ESTADO == "CARTERA" ){
+        return "label label-info";
     }
     else{
         return "label label-success";
@@ -264,7 +387,8 @@ function CargarDetallesLiquidacion(LIQU_ID){
         url: url_servicios + '/PagoLiquidacion/ListarPagosPorLiquidacion/' + LIQU_ID,
         dataType: "json",
         success: function(data){
-            var plantilla = "<tr><td>${pali_FECHACAMBIO}</td><td>${tipl_DESCRIPCION}</td><td style='text-align: right;' >${getFormatoNumero(pali_VALOR)}</td></tr>";
+            var plantilla = "<tr><td>${pali_FECHACAMBIO}</td><td>${tipl_DESCRIPCION}</td><td style='text-align: right;' >${getFormatoNumero(pali_VALOR)}</td>" +
+                "<td style='text-align: right;' ><a class='btn btn-mini' title='Recibo de Caja' rel='tooltip' href='#' onclick='GenerarReciboCaja(${pali_ID})'  ><i class='icon-list-alt' ></i></a></td></tr>";
             $.template( "plantilla", plantilla );
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblPagosLiquidacion tbody" );

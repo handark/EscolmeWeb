@@ -25,6 +25,13 @@ public class PagoLiquidacionWS {
         return PagoLiquidacionBO.ListarPagosPorLiquidacion(LIQU_ID);
     }
     
+    @GET
+    @Path("CargarPagoPorID/{PALI_ID}")
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public PagoLiquidacionAC CargarPagoPorID(@PathParam("PALI_ID") int PALI_ID){
+        return PagoLiquidacionBO.CargarPagoPorID(PALI_ID);
+    }
+    
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

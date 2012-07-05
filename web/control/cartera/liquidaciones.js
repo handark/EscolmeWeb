@@ -1,6 +1,9 @@
 var url_servicios = "../../resources";
 
 $(document).ready(function () {
+    
+    $('#ventanaAdjuntar').modal({show:false,backdrop:true});
+    
     if(sessionStorage.getItem("usua_usuario") == null){
         location.href = "../usuarios/autenticar.html?retorne=../cartera/liquidaciones.html"
         return;
@@ -10,6 +13,8 @@ $(document).ready(function () {
         $(document).BarraLateral({link_activo:'liLiquidaciones'});
         $('#tAnoPeriodo').val((new Date).getFullYear());
         ListarPeriodosAcademicos();
+        
+        
         $('#cbPeriodosAcademicos').change(function(){
             if($(this).val() != ""){
                 CargarLiquidacionesPorPeriodo($(this).val());
@@ -24,28 +29,54 @@ $(document).ready(function () {
             else
                 $("#tblLiquidaciones tbody").empty();
         });
-//         $('#cbPeriodosAcademicos').change(function(){
-//             ListarPeriodosAcademicos();
-//         });
+
+        //Adjuntar Archivos
+        $('#fileupload').fileupload();
+        
+        $('input:file', '#fileupload').button().click(function() {
+            $.getJSON('/rest/file/url', function (response) {
+            $('#fileupload form').prop('action', response.url);
+            $('#fileupload').fileupload({
+                add: function (e, data) {
+                var that = this;
+                data.url = response.url;
+                /* configure the plugin with the /_ah/upload url */
+                $.blueimpUI.fileupload.prototype.options.add.call(that, e, data);
+                }
+            });
+            });
+        });
+
     }
 });
+
+function AbrirVentanaAdjuntar(){
+    $('#ventanaAdjuntar').modal("show");
+}
 
 function CargarLiquidacionesPorPeriodo(peun_ID){
     if($("#tblLiquidaciones").css("display") == "none")
         $("#tblLiquidaciones").show();
     $("#tblLiquidaciones tbody").empty();
+    $("#tblLiquidaciones tfoot").empty();
     $('#cargador').Cargador();
     var estado = $('#cbEstadoLiquidacion').val();
+    var total_saldos = 0;
     $.ajax({
         type: 'GET',
         url: url_servicios + '/Liquidaciones/ListarLiquidacionesPorPagar/' + peun_ID + '/' + estado,
         dataType: "json",
         success: function(data){
-            var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles para ${getNombreEstudiante()}' rel='tooltip' href='estado_estudiante.html?pege_id=${pege_ID}&estp_id=${estp_ID}&peun_id=${peun_ID}' ><i class='icon-folder-open' ></i></a></td>" 
+            
+            for(i=0;i<data.length;i++){
+                total_saldos = total_saldos + (data[i].liqu_TOTALLIQUIDADO - data[i].liqu_TOTALDESCUENTO - data[i].liqu_VALORPAGADO);
+            }
+            var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles para ${getNombreEstudiante()}' rel='tooltip' href='estado_estudiante.html?pege_id=${pege_ID}&estp_id=${estp_ID}&peun_id=${peun_ID}' ><i class='icon-folder-open' ></i></a> <a class='btn btn-mini' title='Adjuntar Archivo' rel='tooltip' onclick='AbrirVentanaAdjuntar()' ><i class='icon-upload' ></i></a></td>" 
                 + "<td>${getNombreEstudiante()}</td><td><span class='${getColorEstadoPago()}'>${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td><td  style='text-align: right;' >${getTotalPagar()}</td><td  style='text-align: right;' >${getSaldo()}</td></tr>";
             $.template( "plantilla", plantilla );
             if(data.length > 0){
                 $.tmpl( "plantilla", data ).appendTo( "#tblLiquidaciones tbody" );
+                $("#tblLiquidaciones tfoot").append("<tr><th colspan='8' style='text-align: right;' >TOTAL SALDO:</th><th style='text-align: right;' >" + getFormatoNumero(total_saldos) + "</th></tr>");
             }
             else{
                 $("#tblLiquidaciones tbody").append("<tr><td colspan='7' ><div class='alert alert-info' >No se encontraron liquidaciones con pagos pendientes</div></td></tr>")
@@ -57,6 +88,9 @@ function CargarLiquidacionesPorPeriodo(peun_ID){
 function getColorEstadoPago(){
     if(this.data.liqu_ESTADO == "PENDIENTE" ){
         return "label label-important";
+    }
+    else if(this.data.liqu_ESTADO == "CARTERA" ){
+        return "label label-info";
     }
     else{
         return "label label-success";

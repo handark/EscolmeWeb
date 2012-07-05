@@ -66,6 +66,51 @@
            </div>
        </div>
        
+       <div class="modal hide fade" id="ventanaReciboCaja" style="width:800px;">
+           <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Recibo de Caja</h3>              
+           </div>
+           <div class="modal-body">
+               <div id='divReciboCaja' style="width:100%;" >
+                    <div style="width:100%;">
+                        <table style="width:100%">
+                            <tr>
+                                    <th style="text-align: left;" id="thRcTitulo">
+                                        INSTITUCION UNIVERSITARIA ESCOLME<br>
+                                        NIT: 890909377-3
+                                        CALLE 50 No 40 - 39
+                                        <br>
+                                        RECIBO DE CAJA
+                                    </th>
+                                    <th style="text-align: right;">
+                                        <img alt="ESCOLME" src="../../recursos/imagenes/logo_escolme_medio.png" >
+
+                                    </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width:100%; margin-top: 20px;" id="divRcCabecera" >
+
+                    </div>
+                    <div style="width:100%; margin-top: 20px;" id="divRcDetalles" >
+
+                    </div>
+                   <div style="width:100%; margin-top: 30px; text-align: left;" >
+                       <strong>
+                           FIRMA Y SELLO <br><br>
+                           ____________________________________<br>
+                           C.C. o NIT No
+                       </strong>
+                   </div>
+                </div>
+           </div>
+           <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+                <a href="#" class="btn btn-primary" id="bImprimirRecibiCaja" ><i class="icon-print icon-white" ></i> Imprimir</a>
+           </div>
+       </div>       
+       
     <div class="modal hide fade" id="ventanaListarPagos">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">×</button>
@@ -74,7 +119,7 @@
         <div class="modal-body">
             <table class="table table-striped" id="tblPagosLiquidacion" >
                 <thead>
-                    <tr><th>FECHA</th><th>TIPO</th><th style="text-align: right;">VALOR</th></tr>
+                    <tr><th>FECHA</th><th>TIPO</th><th style="text-align: right;">VALOR</th><th></th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -133,6 +178,7 @@
     </div>
        
     <script src="../../recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
+    <script src="../../recursos/scripts/jquery/jquery.printElement.min.js"></script>
     <script src="../../recursos/scripts/jquery/jquery.tmpl.min.js"></script>
     <script src="../../recursos/scripts/jquery/jshashtable.js"></script>
     <script src="../../recursos/scripts/jquery/jquery.numberformatter-1.2.3.min.js"></script>
