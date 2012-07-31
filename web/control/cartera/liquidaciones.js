@@ -1,4 +1,5 @@
 var url_servicios = "../../resources";
+var gliqu_REFERENCIA = 0;
 
 $(document).ready(function () {
     
@@ -15,6 +16,7 @@ $(document).ready(function () {
         ListarPeriodosAcademicos();
         
         
+        
         $('#cbPeriodosAcademicos').change(function(){
             if($(this).val() != ""){
                 CargarLiquidacionesPorPeriodo($(this).val());
@@ -29,29 +31,31 @@ $(document).ready(function () {
             else
                 $("#tblLiquidaciones tbody").empty();
         });
-
-        //Adjuntar Archivos
-        $('#fileupload').fileupload();
-        
-        $('input:file', '#fileupload').button().click(function() {
-            $.getJSON('/rest/file/url', function (response) {
-            $('#fileupload form').prop('action', response.url);
-            $('#fileupload').fileupload({
-                add: function (e, data) {
-                var that = this;
-                data.url = response.url;
-                /* configure the plugin with the /_ah/upload url */
-                $.blueimpUI.fileupload.prototype.options.add.call(that, e, data);
-                }
-            });
-            });
-        });
-
     }
 });
 
-function AbrirVentanaAdjuntar(){
+function createUploader(pege_ID){   
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('file-uploader-soporte'),
+        action: '../../OctetStreamReader',
+        params: {
+            no_liquidacion: pege_ID
+        },
+        onComplete: function(id, fileName, responseJSON){
+            $('#ventanaAdjuntar').modal('hide');
+            CargarLiquidacionesPorPeriodo($('#cbPeriodosAcademicos').val());
+            alert("Adjunto agregado con exito a la liquidacion");
+        },
+        debug: true
+    });           
+}
+
+
+
+function AbrirVentanaAdjuntar(pege_ID){
+    gliqu_REFERENCIA = pege_ID;
     $('#ventanaAdjuntar').modal("show");
+    createUploader(pege_ID);
 }
 
 function CargarLiquidacionesPorPeriodo(peun_ID){
@@ -71,7 +75,7 @@ function CargarLiquidacionesPorPeriodo(peun_ID){
             for(i=0;i<data.length;i++){
                 total_saldos = total_saldos + (data[i].liqu_TOTALLIQUIDADO - data[i].liqu_TOTALDESCUENTO - data[i].liqu_VALORPAGADO);
             }
-            var plantilla = "<tr><td><a class='btn btn-mini' title='Ver mas detalles para ${getNombreEstudiante()}' rel='tooltip' href='estado_estudiante.html?pege_id=${pege_ID}&estp_id=${estp_ID}&peun_id=${peun_ID}' ><i class='icon-folder-open' ></i></a> <a class='btn btn-mini' title='Adjuntar Archivo' rel='tooltip' onclick='AbrirVentanaAdjuntar()' ><i class='icon-upload' ></i></a></td>" 
+            var plantilla = "<tr><td style='width:100px' ><a class='btn btn-mini' title='Ver mas detalles para ${getNombreEstudiante()}' rel='tooltip' href='estado_estudiante.html?pege_id=${pege_ID}&estp_id=${estp_ID}&peun_id=${peun_ID}' ><i class='icon-folder-open' ></i></a> <a class='btn btn-mini' title='Adjuntar Archivo' rel='tooltip' onclick='AbrirVentanaAdjuntar(${pege_ID})' ><i class='icon-upload' ></i></a> <a class='btn btn-mini' style='display: ${EstablecerEstadoAdjunto()};' title='Abrir Adjunto' rel='tooltip' target='_blank' href='../../files/${liad_ARCHIVO}' ><i class='icon-file' ></i></a></td>" 
                 + "<td>${getNombreEstudiante()}</td><td><span class='${getColorEstadoPago()}'>${liqu_ESTADO}</span></td><td>${liqu_FECHACAMBIO}</td><td>${liqu_REFERENCIA}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALLIQUIDADO)}</td><td  style='text-align: right;' >${getFormatoNumero(liqu_TOTALDESCUENTO)}</td><td  style='text-align: right;' >${getTotalPagar()}</td><td  style='text-align: right;' >${getSaldo()}</td></tr>";
             $.template( "plantilla", plantilla );
             if(data.length > 0){
@@ -83,6 +87,16 @@ function CargarLiquidacionesPorPeriodo(peun_ID){
             }
         }
     });   
+}
+
+function EstablecerEstadoAdjunto(){
+    if(this.data.liad_ARCHIVO != null ){
+       return "inline";
+    }
+    else{
+        return "none";
+    }
+
 }
 
 function getColorEstadoPago(){

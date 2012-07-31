@@ -5,9 +5,17 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>OctetStreamReader</servlet-name>
+        <servlet-class>escolme.servlet.comun.OctetStreamReader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletAdaptor</servlet-name>
         <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OctetStreamReader</servlet-name>
+        <url-pattern>/OctetStreamReader</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
