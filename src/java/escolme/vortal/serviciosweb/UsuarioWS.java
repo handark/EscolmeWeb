@@ -23,7 +23,7 @@ public class UsuarioWS {
     
     @GET
     @Path("AutenticarUsuario/{usua_usuario}/{usua_contrasena}")
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public UsuarioVO AutenticarUsuario(@PathParam("usua_usuario") String usua_usuario,@PathParam("usua_contrasena") String usua_contrasena){
         UsuarioVO usuario = UsuarioBO.CargarUsuarioPorCredenciales(usua_usuario, usua_contrasena);
         return  usuario;

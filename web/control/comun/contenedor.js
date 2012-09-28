@@ -40,7 +40,7 @@ $.fn.BarraSuperior = function(opciones){
             '</div>'
     }
     
-    var body = '    <div class="navbar navbar-fixed-top">' +
+    var body = '    <div class="navbar navbar-inverse navbar-fixed-top">' +
       '<div class="navbar-inner">' +
         '<div class="container-fluid">' +
           '<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">' +
@@ -67,13 +67,12 @@ $.fn.BarraSuperior = function(opciones){
 $.fn.BarraLateral = function(opciones){
     var defecto = {link_activo:''};
     var opciones = $.extend(defecto, opciones);
-    var body = '<div class="well sidebar-nav">' +
-            '<ul class="nav nav-list">' +
-            '  <li class="nav-header"><i class="icon-briefcase"></i> CARTERA</li>' +
-            AgregarItemLi('liLiquidaciones',opciones.link_activo,'Liquidaciones','/EscolmeWeb/campusadmin/cartera/liquidaciones.html') +
-            AgregarItemLi('liCarteraEstadoAlumno',opciones.link_activo,'Estado Estudiante','/EscolmeWeb/campusadmin/cartera/estado_estudiante.html') +
-            AgregarItemLi('liCarteraAbonos',opciones.link_activo,'Abonos','#') +
-            AgregarItemLi('liCarteraSolicitudCredito',opciones.link_activo,'Solicitud de Credito','#') +
+    var body = '<div>' +
+            '<ul class="nav nav-tabs nav-stacked" >' +
+            AgregarItemLi('liLiquidaciones',opciones.link_activo,'Liquidaciones','/EscolmeWeb/campusadmin/cartera/liquidaciones.html','icon-tasks') +
+            AgregarItemLi('liCarteraEstadoAlumno',opciones.link_activo,'Cartera Estudiante','/EscolmeWeb/campusadmin/cartera/estado_estudiante.html','icon-briefcase') +
+            AgregarItemLi('liFacturas',opciones.link_activo,'Facturas','#','icon-shopping-cart') +
+            AgregarItemLi('liConfiguracion',opciones.link_activo,'Configuración','#','icon-wrench') +
             '</ul>' +
           '</div>';
     $("#BarraLateral").html(body);
@@ -83,13 +82,13 @@ function GenerarBarraInferior(){
     
 }
 
-var AgregarItemLi = function(id,link_activo,titulo,url){
+var AgregarItemLi = function(id,link_activo,titulo,url,icono){
     var estilo = "";
     if(id == link_activo){
         estilo = "class='active'";
         url = "#";
     }
-    return '<li id="' + id + '" ' + estilo + ' ><a href="' + url + '">' + titulo + '</a></li>';
+    return '<li id="' + id + '" ' + estilo + ' ><a href="' + url + '"><i class="' + icono + '" ></i> ' + titulo + '</a></li>';
 }
 
 function Salir(){
