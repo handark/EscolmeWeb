@@ -1,0 +1,44 @@
+<style>
+    .container{
+        width: 400px !important;
+    }
+    form legend{ text-align: center;}
+    footer{ text-align: center;}
+</style>
+<div class="well" style="margin-top:60px;" >
+    <form class="form-horizontal" id="formulario_ingreso" name="formulario_ingreso" >
+    <div style="text-align: center;">
+        <img src="recursos/imagenes/logo_escolme_medio.png" >
+    </div>
+    <fieldset>
+        <legend>Ingreso al Campus Administrativo</legend>
+        <div class="alert alert-error" id="errores" style="display: none; ">
+            <div id="errores_msn"></div>
+        </div>
+        <div class="control-group" id="div_tUsuario"  >
+        <label class="control-label" for="tUsuario">Usuario</label>
+        <div class="controls">
+            <input type="text" ng-model="form_autenticar.usuario" class="input-medium" id="tUsuario" title="Usuario" required="required"  >
+            <span class="help-inline" id="s_tUsuario" ></span>
+        </div>
+        </div>
+        <div class="control-group" id="div_tContrasena">
+            <label class="control-label" for="tContrasena">Contraseña</label>
+            <div class="controls">
+                <input type="password" ng-model="form_autenticar.password" class="input-medium" id="tContrasena" title="Contraseña" required="required" >
+                <span class="help-inline" id="s_tContrasena" ></span>
+            </div>
+        </div>
+        <div class="form-actions" >
+            <button type="button" ng-click="Autenticar(form_autenticar)" data-loading-text="Validando..." ng-disabled="formulario_ingreso.$invalid || isUnchanged(form_autenticar)" id="bAutenticar" class="btn btn-primary" >
+                    <i class="icon-user icon-white" ></i>
+                    Ingresar</button>
+        </div>
+    </fieldset>
+</form>
+</div>
+
+<footer>
+    <p>&copy; Institución Universitaria Escolme 2012</p>
+    <a href="http://www.escolme.edu.co/sitio/" target="_blank"  title="Institución Universitaria Escolme" >www.escolme.edu.co</a>
+</footer>

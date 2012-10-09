@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" >
+    <head>
+        <title>Portal de Servicios Escolme</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Portal de Servicios Escolme">
+        <meta name="author" content="Jose Luis Orozco Mejia - http://handark.com">
+
+        <link href="recursos/bootstrap2.1/css/bootstrap.css" rel="stylesheet">
+        <style>
+        body {
+            padding-top: 40px;
+        }
+        </style>
+        <link href="recursos/bootstrap2.1/css/bootstrap-responsive.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+    <div id="BarraSuperior" ></div>
+           
+    <div id="contenedor" class="container" style="width: 100%;">
+        <iframe id="framePrincipal" src="http://www.escolme.edu.co/campus/" style="border:none; width: 100%;" ></iframe>
+    </div>
+        
+    <script src="recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
+    <script src="recursos/bootstrap2.1/js/bootstrap.min.js"></script>
+    <script src="control/comun/contenedor.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).BarraSuperior({nivel:0,titulo:"Portales Escolme"});
+            $("#contenedor").css("height", jQuery(window).height() - 70 + "px");
+            $("#framePrincipal").css("height", jQuery("#contenedor").height() + "px");
+            
+            $("#l1").click(function(){
+                CargarLink("http://www.escolme.edu.co/campus/","#l1");
+                
+            });
+            $("#l4").click(function(){CargarLink("http://www.escolme.edu.co/sitio/","#l4")});
+        });
+        
+        function CargarLink(url,elemento){
+            $("#framePrincipal").attr("src",url);
+        }
+        
+    </script>
+        
+    </body>
+</html>

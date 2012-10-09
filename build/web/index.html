@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="es" >
+<html ng-app="EscolmeWeb" lang="es" >
     <head>
-        <title>Portal de Servicios Escolme</title>
+        <title>Escolme - Portal de Servicios</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Portal de Servicios Escolme">
         <meta name="author" content="Jose Luis Orozco Mejia - http://handark.com">
-
+        <script type="text/javascript" src="recursos/scripts/modernizr-2.6.1.min.js" ></script>
         <link href="recursos/bootstrap2.1/css/bootstrap.css" rel="stylesheet">
         <style>
         body {
-            padding-top: 40px;
+            padding-top: 55px;
+            height: 100%;
+        }
+        .container{
+            width: 100% !important;
         }
         </style>
         <link href="recursos/bootstrap2.1/css/bootstrap-responsive.css" rel="stylesheet">
@@ -19,34 +23,38 @@
         <![endif]-->
     </head>
     <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+              <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#/"><img src="recursos/imagenes/icono_escolme.png" style="width: 20px; height: 20px;" alt="Escolme" > Portales Escolme</a>
+                <div id="divBarraUsuario"></div>
+                <div class="nav-collapse">
+                  <ul class="nav">
+                    <li id="l1"  ><a href="#/">Campus Academico</a></li>
+                    <li id="l2"  ><a href="#/principal" >Campus Administrativo</a></li>
+                    <li id="l3" ><a href="http://www.escolmevirtual.edu.co/" target="_blank"  >Escolme Virtual</a></li>
+                    <li id="l4" ><a href="http://www.escolme.edu.co" target="_blank" >Portal Escolme</a></li>
+                    <li id="l5" ><a href="http://mail.google.com/a/escolme.edu.co" target="_blank" >Correo Institucional</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div id="contenedor" class="container-fluid" ng-view style="height: 100%; ">
+        </div>  
+        <script type="text/javascript" src="recursos/scripts/jquery/jquery-1.7.2.min.js" ></script>
 
-    <div id="BarraSuperior" ></div>
-           
-    <div id="contenedor" class="container" style="width: 100%;">
-        <iframe id="framePrincipal" src="http://www.escolme.edu.co/campus/" style="border:none; width: 100%;" ></iframe>
-    </div>
-        
-    <script src="recursos/scripts/jquery/jquery-1.7.2.min.js"></script>
-    <script src="recursos/bootstrap2.1/js/bootstrap.min.js"></script>
-    <script src="control/comun/contenedor.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(document).BarraSuperior({nivel:0,titulo:"Portales Escolme"});
-            $("#contenedor").css("height", jQuery(window).height() - 70 + "px");
-            $("#framePrincipal").css("height", jQuery("#contenedor").height() + "px");
-            
-            $("#l1").click(function(){
-                CargarLink("http://www.escolme.edu.co/campus/","#l1");
-                
-            });
-            $("#l4").click(function(){CargarLink("http://www.escolme.edu.co/sitio/","#l4")});
-        });
-        
-        function CargarLink(url,elemento){
-            $("#framePrincipal").attr("src",url);
-        }
-        
-    </script>
-        
+        <script type="text/javascript" src="recursos/bootstrap2.1/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="recursos/angular/angular.js" ></script>
+        <script type="text/javascript" src="js/comun.js" ></script>
+        <script type="text/javascript" src="js/app.js" ></script>
+        <script type="text/javascript" src="js/controller.js" ></script>
+        <script type="text/javascript" src="js/controllers/principalController.js" ></script>
+        <script type="text/javascript" src="js/controllers/carteraController.js" ></script>
     </body>
 </html>
