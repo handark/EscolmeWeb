@@ -1,0 +1,75 @@
+<div class="row-fluid" >
+<div  class="span3"  >
+    <ul class="nav nav-tabs nav-stacked"  >
+        <li ng-repeat="item in menuLateral" >
+            <a href="{{item.url}}" ><i class="{{item.icono}}" ></i> {{item.titulo}}</a>
+        </li>
+    </ul>
+</div>
+<div class="span9" >
+    <div class="breadcrumb" >
+        <div>
+            <a href="#/configuracion" >Configuración</a>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#/configuracion/tipo-documentos" data-toggle="tab" >Tipo de Documentos</a></li>
+        <li><a href="#/configuracion/conceptos-pago" data-toggle="tab" >Conceptos de Pago</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tipo-docs">
+          <div class="container" >
+              <form class="form-horizontal" name="formTipoDocs" >
+                    <input type="hidden" ng-model="tipoDocumentos.contipdoc_id" />
+                    <div class="control-group" ng-class="{error: formTipoDocs.inputTipoDocumentos.$invalid}" >
+                      <label class="control-label" for="inputTipoDocumentos" >Tipo de Documento:</label>
+                      <div class="controls"  >
+                          <input type="text" maxlength="130" ng-model="tipoDocumentos.contipdoc_nombre" id="inputTipoDocumentos" name="inputTipoDocumentos" class="input-xlarge" required >
+                          <span ng-show="formTipoDocs.inputTipoDocumentos.$error.required" class="help-inline">*</span>
+                      </div>
+                    </div>
+                    <div class="control-group" ng-class="{error: formTipoDocs.selectEstado.$invalid}" >
+                      <label class="control-label" for="selectEstado" >Estado:</label>
+                      <div class="controls"  >
+                          <select ng-model="tipoDocumentos.contipdoc_estado" name="selectEstado" class="input-xlarge" required >
+                              <option value="1" selected="selected" >Activo</option>
+                              <option value="0" >Inactivo</option>
+                          </select>
+                          <span ng-show="formTipoDocs.selectEstado.$error.required" class="help-inline">*</span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <div class="controls">
+                        <button type="button" ng-click="Limpiar()" class="btn btn-small"><i class="icon-file"></i> Nuevo</button>
+                        <button type="button" ng-click="Guardar(tipoDocumentos)" ng-disabled="formTipoDocs.$invalid || isUnchanged(tipoDocumentos)" class="btn btn-small"><i class="icon-hdd"></i> Guardar</button>
+                      </div>
+                    </div>
+                </form>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;" ></th>
+                        <th>Tipo de Documento</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="tipo in listaTipoDocumentos" >
+                        <td>
+                            <a href="" title="Editar" ng-click="CargarTipoDocumento(tipo)" class="btn btn-mini"><i class="icon-pencil"></i></a>
+                        </td>
+                        <td>{{tipo.contipdoc_nombre}}</td>
+                        <td>
+                            <i class="{{tipo.contipdoc_estado | FormatoEstadoIcono}}" ></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>     
+      </div>
+      <div class="tab-pane" id="conceptos">
+          Conceptos de Pago
+      </div>
+    </div>
+</div>
+</div>

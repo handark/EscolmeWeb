@@ -8,10 +8,46 @@
 </div>
 <div class="span9" >
     <div class="breadcrumb" >
-    <div>
-        Cartera <span class="divider" >/</span> <a href="#/liquidaciones" >Liquidaciones por Pagar</a>
-        <div class="pull-right label label-info" id="cargador" style="display: none;" ></div>
+        <div>
+            Cartera <span class="divider" >/</span> <a href="#/liquidaciones" >Liquidaciones</a>
+        </div>
     </div>
-</div>
+    
+    <form class="well form-inline">  
+        <label class="control-label" for="tAnoPeriodo">Periodo</label>
+        <input type="number" ng-change="ListarPeriodosAcademicos()" required ng-model="parametros.periodoAno" class="input-small" min="1900" max="2500" id="tAnoPeriodo" >
+        <select id="cbPeriodosAcademicos" ng-change="CargarLiquidacionesPorPeriodo()" required ng-model="parametros.periodoId"  class="input-large" >
+            <option value="0"> -- Seleccione el Periodo</option>
+            <option value="{{c.peun_ID}}" ng-repeat="c in periodosAcademicos" >{{c.peun_ANO}} - {{c.peun_PERIODO}} - {{c.tppa_DESCRIPCION}}</option>
+        </select>
+        <label class="control-label" for="cbEstadoLiquidacion">Estado</label>
+        <select id="cbEstadoLiquidacion" ng-model="parametros.liquidacionEstado" style="width: 200px;" >
+            <option value="TODO" >-TODO-</option>
+            <option value="CARTERA" >CARTERA</option>
+            <option value="PENDIENTE" >PENDIENTE</option>
+            <option value="PAGADO" >PAGADO</option>
+        </select>
+    </form>
+    <div>
+       <table class="table table-striped" id="tblLiquidaciones" >
+           <thead>
+               <tr><th colspan="6">Lista de Liquidaciones</th></tr>
+               <tr>
+                   <th></th>
+                   <th>Estudiante</th>
+                   <th>Estado</th>
+                   <th>Fecha Liquidación</th>
+                   <th>No Liquidación</th>
+                   <th style='text-align: right;' >Total Liquidado</th>
+                   <th style='text-align: right;' >Descuento</th>
+                   <th style="text-align: right;">TOTAL</th>
+                   <th style="text-align: right;">SALDO</th>
+               </tr>
+           </thead>
+           <tbody>
+           </tbody>
+           <tfoot></tfoot>
+       </table>
+   </div>   
 </div>
 </div>

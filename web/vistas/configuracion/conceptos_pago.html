@@ -1,0 +1,52 @@
+<div class="row-fluid" >
+<div  class="span3"  >
+    <ul class="nav nav-tabs nav-stacked"  >
+        <li ng-repeat="item in menuLateral" >
+            <a href="{{item.url}}" ><i class="{{item.icono}}" ></i> {{item.titulo}}</a>
+        </li>
+    </ul>
+</div>
+<div class="span9" >
+    <div class="breadcrumb" >
+        <div>
+            <a href="#/configuracion" >Configuración</a>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li><a href="#/configuracion/tipo-documentos" data-toggle="tab" >Tipo de Documentos</a></li>
+        <li class="active"><a href="#/configuracion/conceptos-pago" data-toggle="tab" >Conceptos de Pago</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="tipo-docs">
+      </div>
+      <div class="tab-pane active" id="conceptos">
+          <div class="container" >
+              <form class="form-horizontal" name="formConceptosPago">
+                    <div class="control-group" ng-class="{error: formConceptosPago.selectTipoDocumentos.$invalid}" >
+                      <label class="control-label" for="selectTipoDocumentos" >Tipo de Documento</label>
+                      <div class="controls">
+                        <select name="selectTipoDocumentos" id="selectTipoDocumentos" required ng-model="conceptosPago.contipdoc_id" 
+                                 ng-options="c.contipdoc_id as c.contipdoc_nombre for c in listaTipoDocumentos"
+                                 class="input-xlarge" >
+                            <option value="" > -- Seleccione el Tipo de Documento</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="control-group" ng-class="{error: formConceptosPago.inputConceptoPago.$invalid}" >
+                      <label class="control-label" for="inputConceptoPago" >Concepto de Pago</label>
+                      <div class="controls">
+                          <input type="text" ng-model="conceptosPago.conconpag_nombre" name="inputConceptoPago" id="inputConceptoPago" required="required" class="input-xlarge" >
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <div class="controls">
+                        <button type="button" ng-click="Limpiar()" class="btn btn-small"><i class="icon-file"></i> Nuevo</button>
+                        <button type="button" ng-disabled="formConceptosPago.$invalid || isUnchanged(conceptosPago)" class="btn btn-small"><i class="icon-hdd"></i> Guardar</button>
+                      </div>
+                    </div>
+                </form>
+          </div>
+      </div>
+    </div>
+</div>
+</div>

@@ -20,7 +20,7 @@ var ValidarSession = function(raiz,$scope){
             {titulo:'Liquidaciones',url:'#/liquidaciones',icono:'icon-tasks'},
             {titulo:'Cartera Estudiante',url:'#/cartera-estudiante',icono:'icon-briefcase'},
             {titulo:'Facturas',url:'#/facturas',icono:'icon-shopping-cart'},
-            {titulo:'Configuración',url:'#/configuracion',icono:'icon-wrench'}
+            {titulo:'Configuración',url:'#/configuracion/tipo-documentos',icono:'icon-wrench'}
         ];
     }
 }

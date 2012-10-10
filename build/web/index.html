@@ -12,9 +12,19 @@
         body {
             padding-top: 55px;
             height: 100%;
+            font-size: 13px;
         }
         .container{
             width: 100% !important;
+        }
+        label, input, button, select, textarea {
+            font-size: 13px;
+        }
+        .btn{
+            font-size: 13px;
+        }
+        .cargador{
+            position: absolute; top: 40px;left: 50%;
         }
         </style>
         <link href="recursos/bootstrap2.1/css/bootstrap-responsive.css" rel="stylesheet">
@@ -23,6 +33,11 @@
         <![endif]-->
     </head>
     <body>
+        <div id="divCargador" class="cargador" style="display: none;" >
+            <div class="alert" style="position: relative; left: -50%;font-weight: bold;" >
+                Cargando...
+            </div>
+        </div>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
@@ -53,8 +68,10 @@
         <script type="text/javascript" src="recursos/angular/angular.js" ></script>
         <script type="text/javascript" src="js/comun.js" ></script>
         <script type="text/javascript" src="js/app.js" ></script>
+        <script type="text/javascript" src="js/filters.js" ></script>
         <script type="text/javascript" src="js/controller.js" ></script>
         <script type="text/javascript" src="js/controllers/principalController.js" ></script>
         <script type="text/javascript" src="js/controllers/carteraController.js" ></script>
+        <script type="text/javascript" src="js/controllers/configuracionController.js" ></script>
     </body>
 </html>
