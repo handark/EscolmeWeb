@@ -1,6 +1,8 @@
 EscolmeWeb - Portal de Servicios Escolme
 =========================================
 
+Desarrollado por: Jose Luis Orozco Mejia - <a href="mailto:handark@gmail.com" >handark@gmail.com</a>
+
 Dependencias: 
   <ul>
     <li>https://github.com/handark/Escolme.Modelo.Datos</li>
@@ -23,6 +25,8 @@ Frameworks y Librerias:
     <li>Bootstrap - http://twitter.github.com/bootstrap/</li>
     <li>AngularJS - http://angularjs.org/</li>
   </ul>   
+
+
 
 
 
