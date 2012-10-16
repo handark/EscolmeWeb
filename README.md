@@ -1,3 +1,4 @@
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/smoothness/jquery-ui.css" rel="stylesheet">
 EscolmeWeb - Portal de Servicios Escolme
 =========================================
 
@@ -28,6 +29,7 @@ Frameworks y Librerias:
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+
 
 
 
