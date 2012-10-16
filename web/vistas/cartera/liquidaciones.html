@@ -21,8 +21,9 @@
             <option value="{{c.peun_ID}}" ng-repeat="c in periodosAcademicos" >{{c.peun_ANO}} - {{c.peun_PERIODO}} - {{c.tppa_DESCRIPCION}}</option>
         </select>
         <label class="control-label" for="cbEstadoLiquidacion">Estado</label>
-        <select id="cbEstadoLiquidacion" ng-model="parametros.liquidacionEstado" style="width: 200px;" >
-            <option value="TODO" >-TODO-</option>
+        <select id="cbEstadoLiquidacion" ng-model="parametros.liquidacionEstado" ng-change="CargarLiquidacionesPorPeriodo()" style="width: 200px;" >
+            <option value="" >-Seleccione Estado Pago-</option>
+            <option value="TODO" >TODO</option>
             <option value="CARTERA" >CARTERA</option>
             <option value="PENDIENTE" >PENDIENTE</option>
             <option value="PAGADO" >PAGADO</option>
@@ -31,7 +32,13 @@
     <div>
        <table class="table table-striped" id="tblLiquidaciones" >
            <thead>
-               <tr><th colspan="6">Lista de Liquidaciones</th></tr>
+               <tr><th colspan="5">Lista de Liquidaciones: {{listaLiquidaciones.length}} encontradas</th>
+                   <td colspan="4" style="text-align: right;">
+                    <button class="btn btn-small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Anterior</button>
+                    Pag. {{currentPage+1}} de {{numberOfPages()}}
+                    <button class="btn btn-small" ng-disabled="currentPage >= listaLiquidaciones.length/pageSize - 1" ng-click="currentPage=currentPage+1">Siguiente</button>
+                    </td>
+               </tr>
                <tr>
                    <th></th>
                    <th>Estudiante</th>
@@ -45,8 +52,36 @@
                </tr>
            </thead>
            <tbody>
+               <tr ng-repeat="liquidacion in listaLiquidaciones | startFrom:currentPage*pageSize | limitTo:pageSize" >
+                   <td style='width:100px' >
+                       <a class='btn btn-mini' title='Ver mas detalles para {{liquidacion.peng_PRIMERNOMBRE}} {{liquidacion.peng_PRIMERAPELLIDO}}' rel='tooltip' href='#/cartera-estudiante?pege_id={{liquidacion.pege_ID}}&estp_id={{liquidacion.estp_ID}}&peun_id={{liquidacion.peun_ID}}' ><i class='icon-folder-open' ></i></a> 
+                       <a class='btn btn-mini' title='Adjuntar Archivo' rel='tooltip'  ><i class='icon-upload' ></i></a> 
+                       <a class='btn btn-mini' style="display: {{liquidacion.liad_ARCHIVO | EstiloBotonVerAdjunto}}"  title='Abrir Adjunto' rel='tooltip' target='_blank' href='../../files/{{liquidacion.liad_ARCHIVO}}' ><i class='icon-file' ></i></a>
+                   </td>
+                   <td>{{liquidacion.peng_PRIMERNOMBRE}} {{liquidacion.peng_PRIMERAPELLIDO}}</td>
+                   <td><span class="{{liquidacion.liqu_ESTADO | ColorEstadoPago}}">{{liquidacion.liqu_ESTADO}}</span></td>
+                   <td>{{liquidacion.liqu_FECHACAMBIO}}</td>
+                   <td>{{liquidacion.liqu_REFERENCIA}}</td>
+                   <td  style='text-align: right;' >{{liquidacion.liqu_TOTALLIQUIDADO | FormatoMoneda}}</td>
+                   <td  style='text-align: right;' >{{liquidacion.liqu_TOTALDESCUENTO | FormatoMoneda}}</td>
+                   <td  style='text-align: right;' >{{liquidacion.liqu_TOTALLIQUIDADO - liquidacion.liqu_TOTALDESCUENTO | FormatoMoneda}}</td>
+                   <td  style='text-align: right;' >{{liquidacion.liqu_TOTALLIQUIDADO - liquidacion.liqu_TOTALDESCUENTO - liquidacion.liqu_VALORPAGADO | FormatoMoneda}}</td>
+               </tr>    
            </tbody>
-           <tfoot></tfoot>
+           <tfoot>
+               <tr>
+                   <td colspan="6"></td>
+                   <th>TOTALES</th>
+                   <th style='text-align: right;' >TOTAL</th>
+                   <th style='text-align: right;' >SALDO</th>
+               </tr>
+               <tr>
+                   <td colspan="6"></td>
+                   <th></th>
+                   <th style='text-align: right;' >$0</th>
+                   <th style='text-align: right;' >{{$scope.totalSaldos | FormatoMoneda}}</th>                   
+               </tr>
+           </tfoot>
        </table>
    </div>   
 </div>
