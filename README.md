@@ -26,6 +26,8 @@ Frameworks y Librerias:
     <li>AngularJS - http://angularjs.org/</li>
   </ul>   
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 
 
 
